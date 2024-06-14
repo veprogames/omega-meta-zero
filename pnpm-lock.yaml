@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      break_eternity.js:
+        specifier: ^2.0.0
+        version: 2.0.0
     devDependencies:
       '@sveltejs/vite-plugin-svelte':
         specifier: ^3.0.2
@@ -389,6 +393,9 @@ packages:
   braces@3.0.3:
     resolution: {integrity: sha512-yQbXgO/OSZVD2IsiLlro+7Hf6Q18EJrKSEsdoMzKePKXct3gvD8oLcOQdIzGupr5Fj+EDe8gO/lxc1BzfMpxvA==}
     engines: {node: '>=8'}
+
+  break_eternity.js@2.0.0:
+    resolution: {integrity: sha512-sOjruhBSerJ406TbLLWDM0JXxJOOj8a9NL4nZ0glNqZbf2V4CIGNrhLYGE2ziG03tVI8iUrf8aDTWN0AYlu9vA==}
 
   browserslist@4.23.1:
     resolution: {integrity: sha512-TUfofFo/KsK/bWZ9TWQ5O26tsWW4Uhmt8IYklbnUa70udB6P2wA7w7o4PY4muaEPBQaAX+CEnmmIA41NVHtPVw==}
@@ -1260,6 +1267,8 @@ snapshots:
   braces@3.0.3:
     dependencies:
       fill-range: 7.1.1
+
+  break_eternity.js@2.0.0: {}
 
   browserslist@4.23.1:
     dependencies:
