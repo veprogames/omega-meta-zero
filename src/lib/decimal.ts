@@ -1,6 +1,6 @@
-import Decimal from "break_eternity.js"
+import "./decimal.extensions"
 
 /**
  * reexport under a name to improve DX
  */
-export const D = Decimal;
+export {default as D} from "break_eternity.js";
