@@ -14,9 +14,10 @@ export function F(n: D, precise: boolean = false) {
     if (n.lt(1e36)) {
         const log10 = n.log10().toNumber();
         const idx = Math.floor(log10 / 3);
-        const mantissa = 10 ** log10 % 3;
+        const mantissa = 10 ** (log10 % 3);
+        const mLog = Math.floor(Math.log10(mantissa));
 
-        return `${mantissa}${suffixes[idx]}`;
+        return `${mantissa.toFixed(2 - mLog)}${suffixes[idx]}`;
     }
 
     return n.toExponential(2);

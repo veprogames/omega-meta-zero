@@ -7,6 +7,7 @@
     import UiUpgrade from "./lib/upgrade/UIUpgrade.svelte";
     import { tickGame } from "./lib/game/game";
     import LayerResource from "./lib/layers/LayerResource.svelte";
+    import { F } from "./lib/format";
 
     let now = Date.now();
 
@@ -33,6 +34,10 @@
         }
     }
 </script>
+
+<svelte:head>
+    <title>{F($game.points)}&alpha;</title>
+</svelte:head>
 
 <main class="flex flex-col gap-8">
     <div class="text-4xl text-center">
