@@ -1,4 +1,4 @@
-import { D } from "./decimal";
+import { D } from "../decimal";
 
 const FINF_LOG10 = Math.log10(Number.MAX_VALUE);
 

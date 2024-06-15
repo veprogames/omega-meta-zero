@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    @apply bg-black text-gray-300 font-mono text-lg;
+}
+
+main {
+    @apply p-8 max-w-screen-lg mx-auto;
+}
+
+button {
+    @apply bg-gray-800 border-gray-300 border-2 p-2 rounded;
+}
+
+button:hover, button:active {
+    @apply bg-gray-600;
+}
