@@ -1,4 +1,5 @@
 import { D } from "../decimal";
+import { deepMerge } from "./save-load";
 
 export class Game {
     points = new D(0);
@@ -11,7 +12,6 @@ export class Game {
     }
 
     loadFromObject(obj: object): void {
-        // not deep
-        Object.assign(this, obj);
+        deepMerge(this, obj);
     }
 }

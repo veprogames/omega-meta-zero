@@ -26,3 +26,19 @@ export function loadGame(): object | null {
     
     return parsed;
 }
+
+export function deepMerge(target: any, source: any) {
+    for(const k in target) {
+        if(!(k in source)) {
+            continue;
+        }
+
+        if(typeof target[k] === "object" && typeof source[k] === "object") {
+            deepMerge(target[k], source[k]);
+        } else if(typeof target[k] === "object" && "loadFromObject" in target[k]) {
+            target[k].loadFromObject(source[k]);
+        } else {
+            target[k] = source[k];
+        }
+    }
+}
