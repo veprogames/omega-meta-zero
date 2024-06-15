@@ -3,6 +3,8 @@ import { D } from "../decimal";
 const FINF_LOG10 = Math.log10(Number.MAX_VALUE);
 
 const LETTERS = "αβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ";
+const HIGHER_LETTERS = "ϝϛͱϻϙͳϸ";
+const LAST = LETTERS[LETTERS.length - 1];
 
 export function getLayerOrdinal(points: D): D {
     const abs = points.abs();
@@ -33,6 +35,53 @@ export function getCurrentLayerAmount(points: D): D {
 }
 
 export function getLayerNameHTML(layer: D): string {
-    const letter = LETTERS[layer.toNumber()];
-    return `<span>${letter}</span>`;
+    const idx = layer.toNumber();
+
+    if(idx < LETTERS.length) {
+        const letter = LETTERS[idx];
+        return `<span>${letter}</span>`;
+    }
+
+    const order = Math.floor(idx / LETTERS.length);
+
+    if(order < 5) {
+        return `${LAST}<sup>${getLayerNameHTML(new D(idx - LETTERS.length))}</sup>`;
+    }
+
+    const highOrdinal = order - 5;
+    const bracketIdx = LETTERS.length + idx % LETTERS.length;
+
+    return `${HIGHER_LETTERS[highOrdinal]}(${getLayerNameHTML(new D(bracketIdx))})`;
+}
+
+export function getLayerColor(layer: D): {h: number, s: number, l: number} {
+    if(layer.gte(Number.MAX_SAFE_INTEGER)) {
+        return {
+            h: Math.random() * 360,
+            s: Math.random() * 100,
+            l: Math.random() * 100,
+        };
+    }
+    
+    const n = layer.toNumber();
+
+    return {
+        h: (n * 45) % 360,
+        s: Math.min(100, 40 + 10 * n),
+        l: 75 + 50 * Math.sin(n),
+    };
+}
+
+export function getLayerGlow(layer: D): {size: number} {
+    if(layer.gte(Number.MAX_SAFE_INTEGER)) {
+        return {
+            size: 16,
+        };
+    }
+
+    const n = layer.toNumber();
+
+    return {
+        size: 16 * (1 - 0.95 ** n),
+    };
 }
