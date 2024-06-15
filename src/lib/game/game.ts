@@ -3,7 +3,6 @@ import { deepMerge } from "./save-load";
 
 export class Game {
     points = new D(0);
-    test = "awrasd";
 
     toJSON() {
         return {
