@@ -25,7 +25,7 @@ export function getLayerAmount(points: D, layer: D): D {
 
     const log = D.pow(FINF_LOG10, -layer);
     const divisor = layer.gte(1) ? 10 : 1;
-    return points.pow(log).div(divisor);
+    return points.pow(log).div(divisor).floor();
 }
 
 export function getCurrentLayerAmount(points: D): D {
