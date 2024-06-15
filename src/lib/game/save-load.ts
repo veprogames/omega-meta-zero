@@ -5,7 +5,8 @@ const KEY = "io.veprogames.omegameta.game";
 
 export function saveGame(game: Game): void {
     const stringifed = JSON.stringify(game);
-    localStorage.setItem(KEY, stringifed);
+    const encoded = btoa(stringifed);
+    localStorage.setItem(KEY, encoded);
 }
 
 function reviver(this: any, key: string, value: any): any {
@@ -22,7 +23,9 @@ export function loadGame(): object | null {
         return null;
     }
 
-    const parsed = JSON.parse(loaded, reviver);
+    const decoded = atob(loaded);
+
+    const parsed = JSON.parse(decoded, reviver);
     
     return parsed;
 }
