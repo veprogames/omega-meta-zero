@@ -9,28 +9,46 @@ const DEFAULT_EFFECT_TEMPLATE: EffectDisplayTemplate = {
     prefix: "x",
     suffix: "",
     precise: true,
+    showAsResource: false,
+}
+
+export interface UpgradeConfig {
+    getPrice: UpgradeFormula,
+    getEffect: UpgradeFormula,
+    maxLevel?: number,
+    effectTemplate?: EffectDisplayTemplate,
 }
 
 export class Upgrade {
     getPrice: UpgradeFormula;
     getEffect: UpgradeFormula;
+    maxLevel: number;
 
     effectTemplate: EffectDisplayTemplate;
     
     private _level = 0;
     private _currentPrice = new D(0);
     private _currentEffect = new D(0);
+    private _nextEffect = new D(0);
 
-    constructor(getPrice: UpgradeFormula, getEffect: UpgradeFormula, effectTemplate = DEFAULT_EFFECT_TEMPLATE) {
+    constructor({getPrice, getEffect, maxLevel, effectTemplate}: UpgradeConfig) {
         this.getPrice = getPrice;
         this.getEffect = getEffect;
-        this.effectTemplate = effectTemplate;
+        this.maxLevel = maxLevel ?? Infinity;
+        this.effectTemplate = effectTemplate ?? DEFAULT_EFFECT_TEMPLATE;
+
+        this.recalculate();
+    }
+
+    private recalculate() {
+        this._currentPrice = this.getPrice(this.level);
+        this._currentEffect = this.getEffect(this.level);
+        this._nextEffect = this.getEffect(this.level + 1);
     }
 
     set level(lvl: number) {
         this._level = lvl;
-        this._currentPrice = this.getPrice(lvl);
-        this._currentEffect = this.getEffect(lvl);
+        this.recalculate();
     }
 
     get level() {
@@ -45,12 +63,20 @@ export class Upgrade {
         return this._currentEffect;
     }
 
-    get currentPoints() {
+    get nextEffect() {
+        return this._nextEffect;
+    }
+
+    private get currentPoints() {
         return gameInstance().points;
     }
 
-    get canAfford() {
+    canAfford() {
         return this.currentPoints.gte(this.currentPrice);
+    }
+
+    isMaxed() {
+        return this.level >= this.maxLevel;
     }
 
     formatCurrentEffect(): string {
@@ -58,7 +84,7 @@ export class Upgrade {
     }
 
     tryBuy(): void {
-        if(this.canAfford) {
+        if(this.canAfford() && !this.isMaxed()) {
             game.update(g => {
                 g.points = g.points.sub(this.currentPrice);
                 return g;
@@ -84,4 +110,5 @@ export interface EffectDisplayTemplate {
     prefix: string,
     suffix: string,
     precise: boolean,
+    showAsResource: boolean,
 }

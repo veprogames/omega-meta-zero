@@ -1,8 +1,12 @@
 <script lang="ts">
+    import { F } from "../format";
     import LayerResource from "../layers/LayerResource.svelte";
+    import UpgradeEffect from "./UpgradeEffect.svelte";
     import type { Upgrade } from "./upgrade";
 
     export let upgrade: Upgrade;
+
+    $: isFree = upgrade.currentPrice.lte(0);
 </script>
 
 <button class="text-left" on:click={() => upgrade.tryBuy()}>
@@ -14,7 +18,20 @@
     
         </slot>
     
-        <LayerResource points={upgrade.currentPrice}/>
-        <span>{upgrade.formatCurrentEffect()}</span>
+        {#if isFree}
+            <span>Free!</span>
+        {:else}
+            <LayerResource points={upgrade.currentPrice}/>
+        {/if}
+
+        <slot name="effect">
+            <span>
+                <UpgradeEffect template={upgrade.effectTemplate} effect={upgrade.currentEffect}/>
+
+                -&gt;
+
+                <UpgradeEffect template={upgrade.effectTemplate} effect={upgrade.nextEffect}/>
+            </span>
+        </slot>
     </div>
 </button>
