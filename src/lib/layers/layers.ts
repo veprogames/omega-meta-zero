@@ -4,7 +4,7 @@ const FINF_LOG10 = Math.log10(Number.MAX_VALUE);
 
 const LETTERS = "αβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ";
 const HIGHER_LETTERS = "ϝϛͱϻϙͳϸ";
-const LAST = LETTERS[LETTERS.length - 1];
+const HIGHER_LETTERS_2 = "☿♀♁♂♃♄♅♆♇";
 
 export function getLayerOrdinal(points: D): D {
     const abs = points.abs();
@@ -34,24 +34,65 @@ export function getCurrentLayerAmount(points: D): D {
     return getLayerAmount(points, getLayerOrdinal(points));
 }
 
+function tower(sequence: string, idx: number): string {
+    if(idx < sequence.length) {
+        const char = sequence[idx];
+        return `<span>${char}</span>`;
+    }
+
+    const last = sequence[sequence.length - 1];
+
+    return `${last}<sup>${tower(sequence, idx - sequence.length)}</sup>`;
+}
+
 export function getLayerNameHTML(layer: D): string {
+    if(!layer.isFinite() || layer.gt("1f1e307.9")) {
+        return "<|∞|>:◯";
+    }
+
     const idx = layer.toNumber();
 
-    if(idx < LETTERS.length) {
-        const letter = LETTERS[idx];
-        return `<span>${letter}</span>`;
+    const len = LETTERS.length * 5;
+
+    // Greek Tower
+    if(idx < len) {
+        return tower(LETTERS, idx);
     }
 
-    const order = Math.floor(idx / LETTERS.length);
+    const len2 = LETTERS.length * HIGHER_LETTERS.length * 5 * 5;
 
-    if(order < 5) {
-        return `${LAST}<sup>${getLayerNameHTML(new D(idx - LETTERS.length))}</sup>`;
+    // Old Greek Tower(Greek Tower)
+    if(idx < len2) {
+        return `${tower(HIGHER_LETTERS, Math.floor(idx / len))}(${tower(LETTERS, idx % len)})`;
     }
 
-    const highOrdinal = order - 5;
-    const bracketIdx = LETTERS.length + idx % LETTERS.length;
+    const allLen = LETTERS.length * HIGHER_LETTERS.length * HIGHER_LETTERS_2.length * 5 ** 3;
 
-    return `${HIGHER_LETTERS[highOrdinal]}(${getLayerNameHTML(new D(bracketIdx))})`;
+    // Planet Tower(Old Greek Tower(Greek Tower))
+    if(idx < allLen) {
+        return `${tower(HIGHER_LETTERS_2, Math.floor(idx / len2))}(${getLayerNameHTML(new D(idx % len2))})`;
+    }
+
+    const subTowerHeight = D.floor(layer.log(allLen));
+
+    // Divided_Fraction
+    if(subTowerHeight.lt(3)) {
+        return `${getLayerNameHTML(D.floor(idx / allLen))}<sub>[${getLayerNameHTML(D.floor(idx % allLen))}]</sub>`;
+    }
+
+    const subTowerHeightTowerHeightApprox = layer.layer;
+
+    // Divided_Fraction{Fraction Tower Height}
+    if(subTowerHeightTowerHeightApprox < 5) {
+        const endOfTowerLayer = D.floor(layer.div(D.pow(allLen, subTowerHeight.sub(1))));
+        const uncertain = layer.gte("1ee15.55");
+        return `${uncertain ? "◯" : getLayerNameHTML(endOfTowerLayer)}<sub>{${getLayerNameHTML(new D(subTowerHeight))}}</sub>`
+    };
+
+    const mag = Math.floor(layer.mag);
+
+    // F layer:Mag
+    return `<|${getLayerNameHTML(new D(subTowerHeightTowerHeightApprox))}|>:${getLayerNameHTML(new D(mag))}`;
 }
 
 export function getLayerColor(layer: D): {h: number, s: number, l: number} {
