@@ -38,6 +38,8 @@ export class Upgrade {
         this.effectTemplate = effectTemplate ?? DEFAULT_EFFECT_TEMPLATE;
 
         this.recalculate();
+
+        window.addEventListener("upgrade-bought", () => this.recalculate());
     }
 
     private recalculate() {
@@ -90,6 +92,7 @@ export class Upgrade {
                 return g;
             });
             this.level++;
+            window.dispatchEvent(new CustomEvent("upgrade-bought"));
         }
     }
 
