@@ -1,12 +1,14 @@
 <script lang="ts">
     import { game } from "./lib/stores";
-    import { onMount } from "svelte";
+    import { onDestroy, onMount } from "svelte";
     import { tickGame } from "./lib/game/game";
     import LayerResource from "./lib/layers/LayerResource.svelte";
     import { F } from "./lib/format";
     import TabContainer from "./lib/tabs/TabContainer.svelte";
 
     let now = Date.now();
+
+    let timeout: number;
 
     onMount(() => {
         mainLoop();
@@ -18,8 +20,14 @@
 
         tickGame(dt);
 
-        setTimeout(mainLoop, 50);
+        timeout = setTimeout(mainLoop, 50);
     }
+
+    onDestroy(() => {
+        if(timeout) {
+            clearTimeout(timeout);
+        }
+    });    
 </script>
 
 <svelte:head>
