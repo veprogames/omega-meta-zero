@@ -1,9 +1,9 @@
 import { D } from "../decimal";
 import { F } from "../format";
-import { gameInstance } from "../game/game";
+import { Game, gameInstance } from "../game/game";
 import { game } from "../stores";
 
-type UpgradeFormula = (level: number) => D;
+type UpgradeFormula = (level: number, game?: Game) => D;
 
 const DEFAULT_EFFECT_TEMPLATE: EffectDisplayTemplate = {
     prefix: "x",
@@ -37,15 +37,17 @@ export class Upgrade {
         this.maxLevel = maxLevel ?? Infinity;
         this.effectTemplate = effectTemplate ?? DEFAULT_EFFECT_TEMPLATE;
 
-        this.recalculate();
+        window.addEventListener("game-ready", () => this.recalculate());
 
         window.addEventListener("upgrade-bought", () => this.recalculate());
     }
 
     private recalculate() {
-        this._currentPrice = this.getPrice(this.level);
-        this._currentEffect = this.getEffect(this.level);
-        this._nextEffect = this.getEffect(this.level + 1);
+        const g = gameInstance();
+
+        this._currentPrice = this.getPrice(this.level, g);
+        this._currentEffect = this.getEffect(this.level, g);
+        this._nextEffect = this.getEffect(this.level + 1, g);
     }
 
     set level(lvl: number) {

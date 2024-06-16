@@ -11,6 +11,8 @@
     let timeout: number;
 
     onMount(() => {
+        window.dispatchEvent(new CustomEvent("game-ready"));
+
         mainLoop();
     });
 

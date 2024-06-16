@@ -2,7 +2,11 @@ import type { D } from "./decimal";
 
 const suffixes = ["", "K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No", "Dc"];
 
-export function F(n: D, precise: boolean = false) {
+export function F(n: D, precise: boolean = false): string {
+    if(n.lt(0)) {
+        return `-${F(n.mul(-1))}`;
+    }
+
     if(n.lt(1e9)) {
         const precision = precise ? 2 : 0;
         return n.toNumber().toLocaleString("en-US", {

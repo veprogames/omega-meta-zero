@@ -27,7 +27,7 @@ export function gameInstance(): Game {
 
 export function tickGame(dt: number): void {
     game.update(g => {
-        const perSecond = g.upgrades.tier1.additive.currentEffect;
+        const perSecond = g.upgrades.getAdditivePerSecond();
         g.points = g.points.add(perSecond.mul(dt));
 
         return g;

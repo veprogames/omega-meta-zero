@@ -10,7 +10,7 @@
     $: isFree = upgrade.currentPrice.lte(0);
 </script>
 
-<button class="text-left relative" disabled={!upgrade.canAfford()} on:click={() => upgrade.tryBuy()}>
+<button class="flex text-left relative" disabled={!upgrade.canAfford()} on:click={() => upgrade.tryBuy()}>
     {#if isFinite(upgrade.maxLevel)}
         <span class="absolute right-4 top-2 font-bold">{F(new D(upgrade.level))} / {F(new D(upgrade.maxLevel))}</span>
     {:else}
@@ -25,7 +25,7 @@
         </slot>
     
         {#if isFree}
-            <span>Free!</span>
+            <span class="text-lime-400 font-bold">Free!</span>
         {:else}
             <LayerResource points={upgrade.currentPrice}/>
         {/if}
