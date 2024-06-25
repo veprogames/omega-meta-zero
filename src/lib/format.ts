@@ -1,4 +1,4 @@
-import type { D } from "./decimal";
+import { D } from "./decimal";
 
 const suffixes = ["", "K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No", "Dc"];
 
@@ -24,5 +24,12 @@ export function F(n: D, precise: boolean = false): string {
         return `${mantissa.toFixed(2 - mLog)}${suffixes[idx]}`;
     }
 
-    return n.toExponential(2);
+    if(n.layer < 10) {
+        const exponent = new D(n.mag).floor();
+        const mantissa = 10 ** (n.mag % 1);
+        const e = "e".repeat(n.layer - 1);
+        return `${e}${mantissa.toFixed(2)}e${F(exponent)}`
+    }
+
+    return `F${n.slog()}`;
 }
