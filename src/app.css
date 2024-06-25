@@ -13,7 +13,7 @@ body {
 }
 
 main {
-    @apply p-8 max-w-screen-lg mx-auto;
+    @apply max-w-screen-lg mx-auto;
 }
 
 button {

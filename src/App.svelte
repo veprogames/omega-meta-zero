@@ -36,10 +36,6 @@
     <title>{F($game.points)}&alpha;</title>
 </svelte:head>
 
-<main class="flex flex-col gap-8">
-    <div class="text-4xl text-center lg:text-6xl">
-        <LayerResource points={$game.points}/>
-    </div>
-
+<main>
     <TabContainer/>
 </main>

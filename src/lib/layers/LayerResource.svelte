@@ -25,6 +25,6 @@
     }
 </script>
 
-<div class="inline">
+<div class="inline h-fit">
     <span>{F(amount)}</span><span style:text-shadow={glow} style:color={color} class="font-bold">{@html name}</span>
 </div>

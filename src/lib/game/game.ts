@@ -1,18 +1,15 @@
 import { get } from "svelte/store";
 import { D } from "../decimal";
 import { deepMerge } from "./save-load";
-import { game } from "./../stores"
-import { ContentUpgrades } from "../upgrade/content-upgrades";
+import { game } from "./../stores";
 
 export class Game {
     points = new D(0);
-    upgrades = new ContentUpgrades();
 
     toJSON() {
         return {
             $version: 1,
-            points: this.points,
-            upgrades: this.upgrades,
+            points: this.points
         };
     }
 
@@ -27,8 +24,10 @@ export function gameInstance(): Game {
 
 export function tickGame(dt: number): void {
     game.update(g => {
-        const perSecond = g.upgrades.getAdditivePerSecond();
-        g.points = g.points.add(perSecond.mul(dt));
+        g.points = g.points
+            .add(dt)
+            .mul(1.1 ** dt)
+            .pow(1.01 ** dt);
 
         return g;
     });
