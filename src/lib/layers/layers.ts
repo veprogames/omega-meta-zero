@@ -99,15 +99,21 @@ export function getLayerNameHTML(layer: D): string {
 }
 
 export function getLayerColor(layer: D): {h: number, s: number, l: number} {
-    if(layer.gte("f15")) {
+    if(!layer.isFinite()) {
         return {
             h: Math.random() * 360,
-            s: Math.random() * 100,
-            l: Math.random() * 100,
+            s: 100,
+            l: 100,
         };
     }
     
-    const n = layer.slog().toNumber();
+    let d = layer.slog();
+
+    if(layer.gte("f15")) {
+        d = d.log10();
+    }
+
+    const n = d.toNumber();
 
     return {
         h: (n * 180) % 360,

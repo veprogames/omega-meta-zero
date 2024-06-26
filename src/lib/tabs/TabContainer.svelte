@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { ComponentType } from "svelte";
-    import OptionsTab from "./OptionsTab.svelte";
     import MainTab from "./MainTab.svelte";
+    import LayerListTab from "./LayerListTab.svelte";
 
     interface Tab {
         title: string,
@@ -14,8 +14,8 @@
             component: MainTab,
         },
         {
-            title: "Options",
-            component: OptionsTab,
+            title: "Explore",
+            component: LayerListTab,
         },
     ];
 
