@@ -3,6 +3,14 @@ import { D } from "./decimal";
 const suffixes = ["", "K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No", "Dc"];
 
 export function F(n: D, precise: boolean = false): string {
+    if(!n.isFinite()) {
+        return "∞";
+    }
+
+    if(n.isNan()) {
+        return "NaN";
+    }
+
     if(n.lt(0)) {
         return `-${F(n.mul(-1))}`;
     }

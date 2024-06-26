@@ -4,7 +4,8 @@ import { deepMerge } from "./save-load";
 
 export class Game {
     points = new D(0);
-    time = 540;
+    time = 0;
+    infinities = 0;
 
     getCurrentLayer(): D {
         return getLayerOrdinal(this.points);
@@ -14,6 +15,7 @@ export class Game {
         return {
             $version: 1,
             time: this.time,
+            infinities: this.infinities,
         };
     }
 

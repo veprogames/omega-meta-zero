@@ -18,12 +18,19 @@
     function tickGame(dt: number): void {
         game.update(g => {
             g.time += dt;
+
+            const effectiveTime = g.time * (g.infinities + 1);
             
-            let f2 = 3.3 * (g.time / 1200);
-            const t2 = Math.max(g.time - 1800, 0);
+            let f2 = 3.3 * (effectiveTime / 1200);
+            const t2 = Math.max(effectiveTime - 1800, 0);
             f2 += 2 ** (2 ** (t2 * 10 / 7200) - 1);
-            const fDecimal2 = new D(`f${f2}`);
-            g.points = D.pow(1.1, g.time).mul(fDecimal2).div(10).add(g.time);
+            const fDecimal2 = isFinite(f2) ? new D(`f${f2}`) : D.dInf;
+            g.points = D.pow(1.1, effectiveTime).mul(fDecimal2).div(10).add(effectiveTime);
+
+            if(!g.points.isFinite()) {
+                g.time = 0;
+                g.infinities += 1;
+            }
 
             return g;
         });

@@ -7,7 +7,7 @@
     import { game } from "../stores";
 
     $: isBig = $game.getCurrentLayer().gte(MIN_BIG_LAYER);
-    $: showInfo = $game.getCurrentLayer().gte(1);
+    $: showInfo = $game.getCurrentLayer().gte(1) || $game.infinities > 0;
 </script>
 
 <div class="flex flex-col justify-center items-stretch h-screen text-center w-full px-8">
@@ -22,6 +22,9 @@
         <div class="flex flex-wrap justify-around gap-8 pt-16" in:fade={{duration: 3000}}>
             <p>You are on Layer <span class="font-bold text-blue-300">{F($game.getCurrentLayer().add(1))}</span></p>
             <div>That is also: <LayerResource layer={new D(0)} points={$game.points}/></div>
+            {#if $game.infinities > 0}
+                <p>You have <span class="font-bold text-blue-300">{F(new D($game.infinities))}</span> True {$game.infinities !== 1 ? "Infinities" : "infinity"}</p>
+            {/if}
         </div>
     {/if}
 </div>
