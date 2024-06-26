@@ -13,7 +13,7 @@ body {
 }
 
 main {
-    @apply p-8 max-w-screen-lg mx-auto;
+    @apply mx-auto;
 }
 
 button {
@@ -42,4 +42,21 @@ h2 {
 
 h3 {
     @apply text-xl text-yellow-400 font-bold;
+}
+
+table {
+    @apply bg-gray-800 border-gray-500 border-2;
+}
+
+td {
+    @apply p-2;
+}
+
+tr:nth-child(2n) {
+    @apply bg-gray-700;
+}
+
+input[type="text"],
+input[type="number"] {
+    @apply bg-gray-700;
 }

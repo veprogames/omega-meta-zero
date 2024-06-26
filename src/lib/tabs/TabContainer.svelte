@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { ComponentType } from "svelte";
-    import UpgradeTab from "./UpgradeTab.svelte";
-    import OptionsTab from "./OptionsTab.svelte";
+    import MainTab from "./MainTab.svelte";
+    import LayerListTab from "./LayerListTab.svelte";
 
     interface Tab {
         title: string,
@@ -10,19 +10,19 @@
 
     const items: Tab[] = [
         {
-            title: "Upgrades",
-            component: UpgradeTab,
+            title: "Main",
+            component: MainTab,
         },
         {
-            title: "Options",
-            component: OptionsTab,
+            title: "Explore",
+            component: LayerListTab,
         },
     ];
 
     let current: Tab = items[0];
 </script>
 
-<div class="pb-32">
+<div>
     <svelte:component this={current.component}></svelte:component>
 </div>
 

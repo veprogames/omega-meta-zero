@@ -2,7 +2,7 @@ import Decimal from "break_eternity.js";
 
 declare global {
     interface Decimal {
-        toJSON(): any
+        toJSON(): any,
     }
 }
 
