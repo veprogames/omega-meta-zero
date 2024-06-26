@@ -39,5 +39,5 @@ export function F(n: D, precise: boolean = false): string {
         return `${e}${mantissa.toFixed(2)}e${F(exponent)}`
     }
 
-    return `F${F(n.slog())}`;
+    return `F${F(n.slog(), true)}`;
 }
