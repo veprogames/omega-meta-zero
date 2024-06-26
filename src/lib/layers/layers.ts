@@ -6,6 +6,9 @@ const LETTERS = "αβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗ�
 const HIGHER_LETTERS = "ϝϛͱϻϙͳϸ";
 const HIGHER_LETTERS_2 = "☿♀♁♂♃♄♅♆♇";
 
+/** Point at which it's useless to show the current amount */
+export const MIN_BIG_LAYER = 1e6;
+
 export function getLayerOrdinal(points: D): D {
     const abs = points.abs();
 
@@ -96,7 +99,7 @@ export function getLayerNameHTML(layer: D): string {
 }
 
 export function getLayerColor(layer: D): {h: number, s: number, l: number} {
-    if(layer.gte(Number.MAX_SAFE_INTEGER)) {
+    if(layer.gte("f15")) {
         return {
             h: Math.random() * 360,
             s: Math.random() * 100,
@@ -104,25 +107,25 @@ export function getLayerColor(layer: D): {h: number, s: number, l: number} {
         };
     }
     
-    const n = layer.toNumber();
+    const n = layer.slog().toNumber();
 
     return {
-        h: (n * 45) % 360,
-        s: Math.min(100, 40 + 10 * n),
-        l: 75 + 50 * Math.sin(n),
+        h: (n * 180) % 360,
+        s: Math.min(100, 100 * n - 20),
+        l: 75 + 15 * Math.sin(0.5 * n),
     };
 }
 
 export function getLayerGlow(layer: D): {size: number} {
-    if(layer.gte(Number.MAX_SAFE_INTEGER)) {
+    if(layer.gte("f15")) {
         return {
-            size: 16,
+            size: 1,
         };
     }
 
-    const n = layer.toNumber();
+    const n = layer.slog().toNumber();
 
     return {
-        size: 16 * (1 - 0.95 ** n),
+        size: (1 - 0.95 ** n),
     };
 }

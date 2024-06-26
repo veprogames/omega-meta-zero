@@ -13,7 +13,7 @@ body {
 }
 
 main {
-    @apply max-w-screen-lg mx-auto;
+    @apply mx-auto;
 }
 
 button {
