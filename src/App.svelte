@@ -4,16 +4,36 @@
     import { F } from "./lib/format";
     import TabContainer from "./lib/tabs/TabContainer.svelte";
     import { D } from "./lib/decimal";
+    import { loadGame, saveGame } from "./lib/game/save-load";
 
     let now = Date.now();
 
     let timeout: number;
+    let saveInterval: number;
 
     onMount(() => {
         window.dispatchEvent(new CustomEvent("game-ready"));
 
+        try {
+            load();
+        } catch(err: unknown) {
+            alert(`Something went wrong while loading the game :pensive: ${err}`);
+        }
+
         mainLoop();
+
+        saveInterval = setInterval(() => saveGame($game), 30_000);
     });
+
+    function load() {
+        const loaded = loadGame();
+        if (loaded) {
+            game.update((g) => {
+                g.loadFromObject(loaded);
+                return g;
+            });
+        }
+    }
 
     function tickGame(dt: number): void {
         game.update(g => {
@@ -48,6 +68,10 @@
     onDestroy(() => {
         if(timeout) {
             clearTimeout(timeout);
+        }
+
+        if(saveInterval) {
+            clearInterval(saveInterval);
         }
     });    
 </script>
