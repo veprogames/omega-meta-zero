@@ -6,35 +6,41 @@
 
     const PER_PAGE = 10;
 
-    let start = "0";
+    let start = "1";
     let page = 0;
     let stepLinear = 1;
     let stepMult = 1;
-    let stepPow = 1;
-    let stepTetr = 0;
 
     let spoilers = false;
+    let fMode = false;
 
     $: layers = Array.from({length: 10}, (_, i) => {
         const idx = i + page * PER_PAGE;
+
+        if(fMode) {
+            const f = parseFloat(start) - 2 + stepLinear * idx + stepMult ** idx;
+            if(isFinite(f)) {
+                return new D(`f${f}`);
+            }
+            return D.dInf;
+        }
+
         return new D(start)
+            .sub(2)
             .add(idx * stepLinear)
-            .mul(D.pow(stepMult, idx))
-            .pow(D.pow(stepPow, idx))
-            .tetrate(stepTetr >= 1 ? stepTetr * idx : 1)
-            .floor();
-    }).filter((layer: D) => spoilers ? layer.lte($game.getCurrentLayer()) : true && layer.gte(0));
+            .add(D.pow(stepMult, idx))
+            .round();
+    }).filter((layer: D) => layer.gte(0) && layer.isFinite());
 </script>
 
 <section class="max-w-screen-lg p-8 mx-auto">
-    <div class="flex flex-wrap gap-4 py-4">
-        <label>Start: <input type="text" bind:value={start} placeholder="1e100" /></label>
-        <label>+Linear: <input type="number" bind:value={stepLinear} placeholder="0" /></label>
-        <label>*Multi: <input type="number" bind:value={stepMult} placeholder="0" step="0.1" /></label>
-        <label>^Power: <input type="number" bind:value={stepPow} placeholder="0" step="0.01" /></label>
-        <label>^^Tetrate: <input type="number" bind:value={stepTetr} placeholder="0" step="0.001" /></label>
-        <label>Spoilers: <input type="checkbox" bind:checked={spoilers} /></label>
+    <div class="flex flex-col md:flex-row gap-4 py-4">
+        <label>layer(n) = {fMode ? "F" : ""}(<input type="text" bind:value={start} placeholder="1e100" /></label>
+        <label>+ <input type="number" bind:value={stepLinear} placeholder="0" /> n</label>
+        <label>+ <input type="number" bind:value={stepMult} placeholder="0" /> <sup>n</sup> - 1)</label>
     </div>
+    <label>Spoilers: <input type="checkbox" bind:checked={spoilers} /></label>
+    <label>F Mode: <input type="checkbox" bind:checked={fMode} /></label>
     <div class="flex justify-center py-4">
         <label>Page: <input type="number" bind:value={page} placeholder="0" /></label>
     </div>
@@ -46,8 +52,18 @@
         {#each layers as layer}
             <tr>
                 <td>{F(layer.add(1))}</td>
-                <td><LayerResourceName {layer}/></td>
+                {#if !spoilers && layer.gt($game.getCurrentLayer())}
+                    <td class="text-gray-400">???</td>
+                {:else}
+                    <td><LayerResourceName {layer}/></td>
+                {/if}
             </tr>
         {/each}
     </table>
 </section>
+
+<style lang="postcss">
+    input {
+        @apply w-12;
+    }
+</style>
