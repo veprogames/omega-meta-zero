@@ -77,6 +77,25 @@
 </script>
 
 <svelte:head>
+    <meta name="keywords" content="idle, incremental, zero player, omega, layers, vepro, veprogames"/>
+    <meta name="description" content="An Incremental Game where you just watch a number grow to absurdity. Zero Player!"/>
+    <meta name="url" content="https://veprogames.github.io/omega-meta-zero/"/>
+    <meta name="image" content="https://veprogames.github.io/omega-meta-zero/icon512x.png"/>
+    <meta name="theme-color" content="#eba000"/>
+
+    <meta name="og:title" content="omega-meta-zero"/>
+    <meta name="og:type" content="website"/>
+    <meta name="og:description" content="An Incremental Game where you just watch a number grow to absurdity. Zero Player!"/>
+    <meta name="og:url" content="https://veprogames.github.io/omega-meta-zero/"/>
+    <meta name="og:image" content="https://veprogames.github.io/omega-meta-zero/icon512x.png"/>
+
+    <meta name="twitter:card" content="summary_image_large"/>
+    <meta name="twitter:title" content="omega-meta-zero"/>
+    <meta name="twitter:description" content="An Incremental Game where you just watch a number grow to absurdity. Zero Player!"/>
+    <meta name="twitter:image" content="https://veprogames.github.io/omega-meta-zero/icon512x.png"/>
+
+    <link rel="icon" href="./favicon.ico" />
+
     <title>{F($game.points)}&alpha;</title>
 </svelte:head>
 
