@@ -10,7 +10,8 @@
     $: showInfo = $game.getCurrentLayer().gte(1) || $game.infinities > 0;
 </script>
 
-<div class="flex flex-col justify-center items-stretch h-screen text-center w-full px-8">
+<div class="flex flex-col justify-evenly items-stretch h-screen text-center w-full px-8 pb-32">
+    <div></div>
     <div class="flex justify-center items-center min-h-72"
         class:justify-center={!isBig}
         class:justify-left={isBig}
@@ -19,7 +20,7 @@
         <LayerResource points={$game.points}/>
     </div>
     {#if showInfo}
-        <div class="flex flex-wrap justify-around gap-8 pt-16" in:fade={{duration: 3000}}>
+        <div class="flex flex-wrap justify-around gap-2 lg:gap-8" in:fade={{duration: 3000}}>
             <p>You are on Layer <span class="font-bold text-blue-300">{F($game.getCurrentLayer().add(1))}</span></p>
             <div>That is also: <LayerResource layer={new D(0)} points={$game.points}/></div>
             {#if $game.infinities > 0}
