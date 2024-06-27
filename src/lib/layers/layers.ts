@@ -53,6 +53,8 @@ export function getLayerNameHTML(layer: D): string {
         return "<|∞|>:◯";
     }
 
+    layer = layer.round();
+
     const idx = layer.toNumber();
 
     const len = LETTERS.length * 5;
@@ -89,7 +91,7 @@ export function getLayerNameHTML(layer: D): string {
     if(subTowerHeightTowerHeightApprox < 5) {
         const endOfTowerLayer = D.floor(layer.div(D.pow(allLen, subTowerHeight.sub(1))));
         const uncertain = layer.gte("1ee15.55");
-        return `${uncertain ? "◯" : getLayerNameHTML(endOfTowerLayer)}<sub>{${getLayerNameHTML(new D(subTowerHeight))}}</sub>`
+        return `<sub>{${getLayerNameHTML(new D(subTowerHeight))}}</sub>${uncertain ? "◯" : getLayerNameHTML(endOfTowerLayer)}`
     };
 
     const mag = Math.floor(layer.mag);
